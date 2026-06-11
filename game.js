@@ -8,7 +8,9 @@ let currentChallenge = null;
 let active = true;
 
 function print(text) {
-  output.innerHTML += text + "\n";
+  // Support paragraph breaks: literal \n\n in CSV becomes HTML line breaks
+  const formatted = text.replace(/\\n\\n/g, "<br><br>").replace(/\\n/g, "<br>");
+  output.innerHTML += formatted + "\n";
   // Scroll the output area, not the whole page
   output.scrollTop = output.scrollHeight;
 }
