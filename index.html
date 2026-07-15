@@ -33,7 +33,13 @@
           node = pathMatch[1];
         }
       }
-      if (!node) node = "node1";
+      if (!node) {
+        return {
+          csv: null,
+          node: null,
+          error: 'No node was supplied. Scan a valid node.'
+        };
+      }
       return {
         csv: `data/${node}.csv`,
         node
@@ -41,18 +47,17 @@
     }
     const nodeInfo = getNodeInfo();
     window.NODE_FILE = nodeInfo.csv;
+    window.NODE_ERROR = nodeInfo.error || null;
     // Set header title
     function formatHeader(csv) {
       // Change page title dependent on csv file linked
       // Allows for randomised csv file naming to make the url more complex hard to guess (soooo secure yep haha)
       const map = {
-        'data/node1.csv': 'ROUND 1 - Node 1',
-        'data/node2.csv': 'ROUND 1 - Node 2',
-        'data/node3.csv': 'ROUND 1 - Node 3',
-        'data/node4.csv': 'ROUND 2 - Node 1',
-        'data/node5.csv': 'ROUND 2 - Node 2',
-        'data/node6.csv': 'ROUND 2 - Node 3',
-
+        'data/R1L1K7Q9M2X.csv': 'ROUND 1 - Node 1',
+        'data/R1L2A4Z8P6D.csv': 'ROUND 1 - Node 2',
+        'data/R1L3N5T3W8F.csv': 'ROUND 1 - Node 3',
+        'data/R2L1H9C4R7B.csv': 'ROUND 2 - Node 1',
+        'data/R2L2Y6P2V8K.csv': 'ROUND 2 - Node 2',
         // Add extra here
       };
       return map[csv] || '44 Nodes - Secure Terminal';

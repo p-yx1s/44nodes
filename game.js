@@ -17,18 +17,32 @@ function print(text) {
 
 // Collects challenge data from CSV
 async function loadCSV() {
-  const res = await fetch(window.NODE_FILE);
-  if (!res.ok) {
-    print(`[ERROR] Could not load CSV: ${window.NODE_FILE}`);
+  if (!window.NODE_FILE) {
+    print(`[ERROR] ${window.NODE_ERROR || 'No CSV file specified. Scan a valid node.'}`);
     challenges = [];
     return;
   }
-  const text = await res.text();
-  const rows = text.trim().split("\n").slice(1);
-  challenges = rows.map(row => {
-    const [title, description] = row.split(",");
-    return { title, description };
-  });
+
+  try {
+    const res = await fetch(window.NODE_FILE);
+    if (!res.ok) {
+      print(`[ERROR] Could not load CSV: ${window.NODE_FILE}`);
+      challenges = [];
+      return;
+    }
+    const text = await res.text();
+    const rows = text.trim().split("\n").slice(1);
+    challenges = rows.map(row => {
+      const [title, description] = row.split(",");
+      return { title, description };
+    });
+  } catch (error) {
+    print(`[ERROR] Could not load CSV: ${window.NODE_FILE}`);
+    if (error instanceof Error) {
+      print(`[ERROR] ${error.message}`);
+    }
+    challenges = [];
+  }
 }
 
 //Picks random challenge
